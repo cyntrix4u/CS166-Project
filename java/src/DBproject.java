@@ -297,6 +297,20 @@ public class DBproject{
 		return input;
 	}//end readChoice
 
+	public static boolean isValid(String userResponse){
+		userResponse = userResponse.toLowerCase();
+		if(userResponse=="y" || userResponse=="yes"){
+			System.out.println("Input accepted!");
+			return true;
+		}else if(userResponse=="n" || userResponse=="no") {
+			System.out.println("Try inputting again!");
+			return false;
+		}
+		System.out.println("Invalid input entered!");
+		System.out.println("Try inputting again!");
+		return false;	
+	}
+
 	/**
 	 * Function to take in String input from user
 	 * @param prompt Prompt that will be printed before taking in input
@@ -324,7 +338,48 @@ public class DBproject{
 		return input;
 	}
 
+	public static int readIntInput(String prompt){
+		int input=0;
+		boolean done = false;
+		do{
+			try{
+				System.out.print(prompt + ": ");
+				input = in.read();
+
+				// Check user input
+				if(input<0/* || add additional conditions here */){
+					throw new Exception("ERROR! Invalid input, please try again...");
+				}
+
+				done = true;
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+			}
+		}while(!done);
+		return input;
+	}
+
+
 	public static void AddDoctor(DBproject esql) {//1
+		String sqlQuery = "";
+		int doctorID = 0;
+		String name = "";
+		String specialty = "";
+		int did = 0;
+		boolean valid = false;
+
+		do{
+			doctorID = readIntInput("Enter doctor ID");
+			name = readStrInput("Enter doctor's name");
+			specialty = readStrInput("Enter doctor's specialty");
+			did = readIntInput("Enter department ID");
+
+
+			System.out.println("Doctor ID: "+ doctorID + "\nName: " + name + "\nSpecialty: " + specialty + "\nDept ID: "+ did);
+			valid = isValid(readStrInput("Is this correct? (y/n)"));
+		}while(!valid);
+
+		esql.executeQueryAndPrintResult(sqlQuery);
 	}
 
 	public static void AddPatient(DBproject esql) {//2
