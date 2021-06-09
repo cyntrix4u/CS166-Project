@@ -360,7 +360,7 @@ public class DBproject{
 	}
 
 
-	public static void AddDoctor(DBproject esql) {//1
+	public static void AddDoctor(DBproject esql) throws SQLException{//1
 		String sqlQuery = "";
 		int doctorID = 0;
 		String name = "";
@@ -382,31 +382,31 @@ public class DBproject{
 		esql.executeQueryAndPrintResult(sqlQuery);
 	}
 
-	public static void AddPatient(DBproject esql) {//2
+	public static void AddPatient(DBproject esql) throws SQLException{//2
 	}
 
-	public static void AddAppointment(DBproject esql) {//3
+	public static void AddAppointment(DBproject esql) throws SQLException{//3
 	}
 
 
-	public static void MakeAppointment(DBproject esql) {//4
+	public static void MakeAppointment(DBproject esql) throws SQLException{//4
 		// Given a patient, a doctor and an appointment of the doctor that s/he wants to take, add an appointment to the DB
 	}
 
-	public static void ListAppointmentsOfDoctor(DBproject esql) {//5
+	public static void ListAppointmentsOfDoctor(DBproject esql) throws SQLException{//5
 		// For a doctor ID and a date range, find the list of active and available appointments of the doctor
 	}
 
-	public static void ListAvailableAppointmentsOfDepartment(DBproject esql) {//6
+	public static void ListAvailableAppointmentsOfDepartment(DBproject esql) throws SQLException{//6
 		// For a department name and a specific date, find the list of available appointments of the department
 	}
 
-	public static void ListStatusNumberOfAppointmentsPerDoctor(DBproject esql) {//7
+	public static void ListStatusNumberOfAppointmentsPerDoctor(DBproject esql) throws SQLException{//7
 		// Count number of different types of appointments per doctors and list them in descending order
 	}
 
 	
-	public static void FindPatientsCountWithStatus(DBproject esql) {//8
+	public static void FindPatientsCountWithStatus(DBproject esql) throws SQLException{//8
 		// Find how many patients per doctor there are with a given status (i.e. PA, AC, AV, WL) and list that number per doctor.
 	}
 }
