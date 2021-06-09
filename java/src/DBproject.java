@@ -297,6 +297,33 @@ public class DBproject{
 		return input;
 	}//end readChoice
 
+	/**
+	 * Function to take in String input from user
+	 * @param prompt Prompt that will be printed before taking in input
+	 * @return user input string, will always be single token EX: firstName, hospitalName, etc
+	 */
+	public static String readStrInput(String prompt){
+		String input="";
+		boolean done = false;
+		do{
+			try{
+				System.out.print(prompt + ": ");
+				input = in.readLine();
+
+				// Check user input
+				if(input==""/* || add additional conditions here */){
+					throw new Exception("ERROR! Invalid input, please try again...");
+				}
+
+				done = true;
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+
+			}
+		}while(!done);
+		return input;
+	}
+
 	public static void AddDoctor(DBproject esql) {//1
 	}
 
