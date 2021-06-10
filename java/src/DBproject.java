@@ -31,6 +31,7 @@ import java.util.ArrayList;
  */
 
 public class DBproject{
+	static final int DEFAULT_LIMIT = 256;
 	//reference to physical database connection
 	private Connection _connection = null;
 	static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -316,7 +317,7 @@ public class DBproject{
 	 * @param prompt Prompt that will be printed before taking in input
 	 * @return user input string, will always be single token EX: firstName, hospitalName, etc
 	 */
-	public static String readStrInput(String prompt){
+	public static String readStrInput(String prompt, int limit){
 		String input="";
 		boolean done = false;
 		do{
@@ -325,7 +326,7 @@ public class DBproject{
 				input = in.readLine();
 
 				// Check user input
-				if(input==""/* || add additional conditions here */){
+				if(input==""|| input.length()>limit){
 					throw new Exception("ERROR! Invalid input, please try again...");
 				}
 
@@ -370,22 +371,47 @@ public class DBproject{
 
 		do{
 			doctorID = readIntInput("Enter doctor ID");
-			name = readStrInput("Enter doctor's name");
-			specialty = readStrInput("Enter doctor's specialty");
+			name = readStrInput("Enter doctor's name",128);
+			specialty = readStrInput("Enter doctor's specialty",128);
 			did = readIntInput("Enter department ID");
 
 
 			System.out.println("Doctor ID: "+ doctorID + "\nName: " + name + "\nSpecialty: " + specialty + "\nDept ID: "+ did);
-			valid = isValid(readStrInput("Is this correct? (y/n)"));
+			valid = isValid(readStrInput("Is this correct? (y/n)",3));
 		}while(!valid);
-
+		//TODO DOCTOR build sql statement
 		esql.executeQueryAndPrintResult(sqlQuery);
 	}
 
 	public static void AddPatient(DBproject esql) throws SQLException{//2
+		String sqlQuery = "";
+		boolean valid = false;
+		int patientID = 0;
+		String name = "";
+		char gender = 0; // m/M or f/F
+		int age = 0;
+		String address = "";
+		int numberOfApts = 0;
+
+		do{
+			patientID = readIntInput("Enter patient ID");
+			name = readStrInput("Enter patient's name",128);
+			gender = readStrInput("Enter patient's gender (m/f)", 1).charAt(0);
+			age = readIntInput("Enter patient's age");
+			address = readStrInput("Enter patient's address",256);
+			numberOfApts = readIntInput("Enter number of appointments for patient");
+
+			System.out.println("Patient ID: " + patientID + ", name: " + name + ", gender: " + gender + ", \nage: " + age
+			+ ", address: " + address + ", number of appointments: " + numberOfApts);
+			valid = isValid(readStrInput("Is this correct? (y/n)",3));
+		}while(!valid);
+
+		//TODO PATIENT build sql statement 
+		esql.executeQueryAndPrintResult(sqlQuery);
 	}
 
 	public static void AddAppointment(DBproject esql) throws SQLException{//3
+		
 	}
 
 
