@@ -300,11 +300,10 @@ public class DBproject{
 
 	public static boolean isValid(String userResponse){
 		userResponse = userResponse.toLowerCase();
-		System.out.println("USER ENTERED: " + userResponse);
-		if(userResponse=="y" || userResponse=="yes"){
+		if(userResponse.equals("y") || userResponse.equals("yes")){
 			System.out.println("Input accepted!");
 			return true;
-		}else if(userResponse=="n" || userResponse=="no") {
+		}else if(userResponse.equals("n") || userResponse.equals("no")) {
 			System.out.println("Try inputting again!");
 			return false;
 		}
@@ -327,7 +326,7 @@ public class DBproject{
 				input = in.readLine();
 
 				// Check user input
-				if(input==""|| input.length()>limit){
+				if(input.isEmpty()|| input.length()>limit){
 					throw new Exception("ERROR! Invalid input, please try again...");
 				}
 
@@ -430,7 +429,7 @@ public class DBproject{
 			date = readStrInput("Enter date (mm/dd/yyyy)", 10);
 			timeSlot = readStrInput("Enter time slot (hh:mm-hh:mm)", 11);
 			status = readStrInput("Enter appointment status (PA/AV/WL/AC)", 2);
-			if(status!="PA" || status!="AV" || status!="WL" || status!="AC"){
+			if(!status.equals("PA") || !status.equals("AV") || !status.equals("WL") || !status.equals("AC")){
 				System.out.println("Invalid Status! Please try again...");
 				continue;
 			}
