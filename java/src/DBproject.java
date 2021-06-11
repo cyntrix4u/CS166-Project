@@ -468,8 +468,8 @@ public class DBproject{
 
 		//DONE APPOINTMENT build sql statement 
 		sqlQuery = String.format("SELECT appnt_ID, adate, time_slot" +
-		"FROM DOCTOR NATURAL JOIN HAS_APPOINTMENT NATURAL JOIN APPOINTMENT" +
-		"WHERE doctor_ID==%d AND adate IN BETWEEN '%s' AND '%s';", doctorID,date1,date2);
+		"FROM DOCTOR D, HAS_APPOINTMENT HA, APPOINTMENT A" +
+		"WHERE D.doctor_ID==HA.doctor_id AND HA.appt_id==A.appnt_ID AND D.doctor_ID==%d AND adate IN BETWEEN '%s' AND '%s';", doctorID,date1,date2);
 		esql.executeQueryAndPrintResult(sqlQuery);
 	}
 
