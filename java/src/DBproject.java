@@ -384,8 +384,6 @@ public class DBproject{
 
 		//DONE DOCTOR build sql statement
 		sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%s', %d);","DOCTOR",doctorID,name,specialty,did);
-		//esql.executeQueryAndPrintResult(sqlQuery);
-		//esql.executeQuery(sqlQuery);
 		esql.executeUpdate(sqlQuery);
 	}
 
@@ -415,11 +413,7 @@ public class DBproject{
 
 		//DONE PATIENT build sql statement 
 		sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%c', %d, '%s', %d);","PATIENT",patientID,name,gender,age, address, numberOfApts);
-		// esql.executeQueryAndPrintResult(sqlQuery);
-		List<List<String>> result = esql.executeQueryAndReturnResult(sqlQuery);
-		for(int i = 0; i<result.size();i++){
-			System.out.println(result.get(i).get(0));
-		}
+		esql.executeUpdate(sqlQuery);
 	}
 
 	public static void AddAppointment(DBproject esql) throws SQLException{//3
@@ -447,7 +441,7 @@ public class DBproject{
 
 		//DONE APPOINTMENT build sql statement 
 		sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%s', '%s');","APPOINTMENT",appointmentID,date,timeSlot,status);
-		esql.executeQueryAndPrintResult(sqlQuery);
+		esql.executeUpdate(sqlQuery);
 	}
 
 
