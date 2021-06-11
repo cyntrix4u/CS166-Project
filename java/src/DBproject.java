@@ -490,8 +490,8 @@ public class DBproject{
 
 		//DONE APPOINTMENT build sql statement 
 		sqlQuery = "SELECT appnt_ID, adate, time_slot, status" +
-		"FROM (APPOINTMENT NATURAL JOIN HAS_APPOINTMENT NATURAL JOIN DOCTOR) A, DEPARTMENT D" +
-		String.format("WHERE D.dept_ID==A.did AND D.name=='%s' AND A.adate=='%s' AND A.status=='AV';", deptName,date);
+		"FROM APPOINTMENT A, HAS_APPOINTMENT HA,  DOCTOR Do, DEPARTMENT D" +
+		String.format("WHERE A.appnt_ID==HA.appt_id AND HA.doctor_id==Do.doctor_ID AND D.dept_ID==Do.did AND D.name=='%s' AND A.adate=='%s' AND A.status=='AV';", deptName,date);
 
 		esql.executeQueryAndPrintResult(sqlQuery);
 	}
