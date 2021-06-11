@@ -268,6 +268,7 @@ public class DBproject{
 				}
 			}
 		}catch(Exception e){
+			System.out.println("Exception thrown!");
 			System.err.println (e.getMessage ());
 		}finally{
 			try{
@@ -383,7 +384,9 @@ public class DBproject{
 
 		//DONE DOCTOR build sql statement
 		sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%s', %d);","DOCTOR",doctorID,name,specialty,did);
-		esql.executeQueryAndPrintResult(sqlQuery);
+		//esql.executeQueryAndPrintResult(sqlQuery);
+		//esql.executeQuery(sqlQuery);
+		esql.executeUpdate(sqlQuery);
 	}
 
 	public static void AddPatient(DBproject esql) throws SQLException{//2
