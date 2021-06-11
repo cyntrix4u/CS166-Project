@@ -345,7 +345,7 @@ public class DBproject{
 		do{
 			try{
 				System.out.print(prompt + ": ");
-				input = in.read();
+				input = Integer.parseInt(in.readLine());
 
 				// Check user input
 				if(input<0/* || add additional conditions here */){
