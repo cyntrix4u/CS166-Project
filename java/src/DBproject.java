@@ -412,7 +412,11 @@ public class DBproject{
 
 		//DONE PATIENT build sql statement 
 		sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%c', %d, '%s', %d);","PATIENT",patientID,name,gender,age, address, numberOfApts);
-		esql.executeQueryAndPrintResult(sqlQuery);
+		// esql.executeQueryAndPrintResult(sqlQuery);
+		List<List<String>> result = esql.executeQueryAndReturnResult(sqlQuery);
+		for(int i = 0; i<result.size();i++){
+			System.out.println(result.get(i).get(0));
+		}
 	}
 
 	public static void AddAppointment(DBproject esql) throws SQLException{//3
