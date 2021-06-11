@@ -362,6 +362,7 @@ public class DBproject{
 
 
 	public static void AddDoctor(DBproject esql) throws SQLException{//1
+		//ex: 4,Rita Brock,Allergist,23
 		String sqlQuery = "";
 		int doctorID = 0;
 		String name = "";
@@ -379,11 +380,14 @@ public class DBproject{
 			System.out.println("Doctor ID: "+ doctorID + "\nName: " + name + "\nSpecialty: " + specialty + "\nDept ID: "+ did);
 			valid = isValid(readStrInput("Is this correct? (y/n)",3));
 		}while(!valid);
-		//TODO DOCTOR build sql statement
+
+		//DONE DOCTOR build sql statement
+		sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%s', %d);","DOCTOR",doctorID,name,specialty,did);
 		esql.executeQueryAndPrintResult(sqlQuery);
 	}
 
 	public static void AddPatient(DBproject esql) throws SQLException{//2
+		//ex: 29,Melonie Helmers,F,52,7584 S. Thatcher Lane Indiana,1
 		String sqlQuery = "";
 		boolean valid = false;
 		int patientID = 0;
@@ -396,7 +400,7 @@ public class DBproject{
 		do{
 			patientID = readIntInput("Enter patient ID");
 			name = readStrInput("Enter patient's name",128);
-			gender = readStrInput("Enter patient's gender (m/f)", 1).charAt(0);
+			gender = readStrInput("Enter patient's gender (M/F)", 1).toUpperCase().charAt(0);
 			age = readIntInput("Enter patient's age");
 			address = readStrInput("Enter patient's address",256);
 			numberOfApts = readIntInput("Enter number of appointments for patient");
@@ -406,12 +410,37 @@ public class DBproject{
 			valid = isValid(readStrInput("Is this correct? (y/n)",3));
 		}while(!valid);
 
-		//TODO PATIENT build sql statement 
+		//DONE PATIENT build sql statement 
+		sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%c', %d, '%s', %d);","PATIENT",patientID,name,gender,age, address, numberOfApts);
 		esql.executeQueryAndPrintResult(sqlQuery);
 	}
 
 	public static void AddAppointment(DBproject esql) throws SQLException{//3
-		
+		//ex: 24,10/20/2021,10:00-17:00,AC
+		String sqlQuery = "";
+		boolean valid = false;
+		int appointmentID = 0;
+		String date = "";
+		String timeSlot = ""; // hh:mm-hh:mm
+		String status = ""; // PA, AV, WL, AC
+
+		do{
+			appointmentID = readIntInput("Enter appointment ID");
+			date = readStrInput("Enter date (mm/dd/yyyy)", 10);
+			timeSlot = readStrInput("Enter time slot (hh:mm-hh:mm)", 11);
+			status = readStrInput("Enter appointment status (PA/AV/WL/AC)", 2);
+			if(status!="PA" || status!="AV" || status!="WL" || status!="AC"){
+				System.out.println("Invalid Status! Please try again...");
+				continue;
+			}
+			System.out.println("Appointment ID: " + appointmentID + ", date: " + date + ", time slot: " + timeSlot + ", status: " + status);
+			
+			valid = isValid(readStrInput("Is this correct? (y/n)",3));
+		}while(!valid);
+
+		//DONE APPOINTMENT build sql statement 
+		sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%s', '%s');","APPOINTMENT",appointmentID,date,timeSlot,status);
+		esql.executeQueryAndPrintResult(sqlQuery);
 	}
 
 
@@ -421,10 +450,45 @@ public class DBproject{
 
 	public static void ListAppointmentsOfDoctor(DBproject esql) throws SQLException{//5
 		// For a doctor ID and a date range, find the list of active and available appointments of the doctor
+		String sqlQuery = "";
+		boolean valid = false;
+		int doctorID = 0;
+		String date1 = "";
+		String date2 = "";
+
+		do{
+			doctorID = readIntInput("Enter doctor ID");
+			date1 = readStrInput("Enter start date (mm/dd/yyyy)", 10);
+			date2 = readStrInput("Enter end date (mm/dd/yyyy)", 10);
+			
+			System.out.println("Doctor ID: " + doctorID + ", date range: " + date1 + "->" + date2);
+			valid = isValid(readStrInput("Is this correct? (y/n)",3));
+		}while(!valid);
+
+		//DONE APPOINTMENT build sql statement 
+		sqlQuery = String.format("SELECT appnt_ID, adate, time_slot" +
+		"FROM DOCTOR NATURAL JOIN HAS_APPOINTMENT NATURAL JOIN APPOINTMENT" +
+		"WHERE doctor_ID==%d AND adate IN BETWEEN '%s' AND '%s';", doctorID,date1,date2);
+		esql.executeQueryAndPrintResult(sqlQuery);
 	}
 
 	public static void ListAvailableAppointmentsOfDepartment(DBproject esql) throws SQLException{//6
 		// For a department name and a specific date, find the list of available appointments of the department
+		String sqlQuery = "";
+		boolean valid = false;
+		String deptName = "";
+		String date = "";
+
+		do{
+			deptName = readStrInput("Enter department name", 32);
+			date = readStrInput("Enter date (yyyy-mm-dd)", 10);
+			
+			System.out.println("Department Name: " + deptName + ", date: "+date);
+			valid = isValid(readStrInput("Is this correct? (y/n)",3));
+		}while(!valid);
+
+		//TODO APPOINTMENT build sql statement 
+		esql.executeQueryAndPrintResult(sqlQuery);
 	}
 
 	public static void ListStatusNumberOfAppointmentsPerDoctor(DBproject esql) throws SQLException{//7
