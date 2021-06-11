@@ -488,7 +488,11 @@ public class DBproject{
 			valid = isValid(readStrInput("Is this correct? (y/n)",3));
 		}while(!valid);
 
-		//TODO APPOINTMENT build sql statement 
+		//DONE APPOINTMENT build sql statement 
+		sqlQuery = "SELECT appnt_ID, adate, time_slot, status" +
+		"FROM (APPOINTMENT NATURAL JOIN HAS_APPOINTMENT NATURAL JOIN DOCTOR) A, DEPARTMENT D" +
+		String.format("WHERE D.dept_ID==A.did AND D.name=='%s' AND A.adate=='%s' AND A.status=='AV';", deptName,date);
+
 		esql.executeQueryAndPrintResult(sqlQuery);
 	}
 
