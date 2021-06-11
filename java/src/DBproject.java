@@ -300,6 +300,7 @@ public class DBproject{
 
 	public static boolean isValid(String userResponse){
 		userResponse = userResponse.toLowerCase();
+		System.out.println("USER ENTERED: " + userResponse);
 		if(userResponse=="y" || userResponse=="yes"){
 			System.out.println("Input accepted!");
 			return true;
@@ -345,7 +346,7 @@ public class DBproject{
 		do{
 			try{
 				System.out.print(prompt + ": ");
-				input = in.read();
+				input = Integer.parseInt(in.readLine());
 
 				// Check user input
 				if(input<0/* || add additional conditions here */){
