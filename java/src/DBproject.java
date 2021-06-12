@@ -503,9 +503,10 @@ public class DBproject{
 		}while(!valid);
 
 		//DONE APPOINTMENT build sql statement 
-		sqlQuery = String.format("SELECT appnt_ID, adate, time_slot" +
-		"FROM DOCTOR D, HAS_APPOINTMENT HA, APPOINTMENT A" +
+		sqlQuery = String.format("SELECT appnt_ID, adate, time_slot " +
+		"FROM DOCTOR D, HAS_APPOINTMENT HA, APPOINTMENT A " +
 		"WHERE D.doctor_ID==HA.doctor_id AND HA.appt_id==A.appnt_ID AND D.doctor_ID==%d AND adate IN BETWEEN '%s' AND '%s';", doctorID,date1,date2);
+
 		esql.executeQueryAndPrintResult(sqlQuery);
 	}
 
