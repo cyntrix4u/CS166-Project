@@ -609,10 +609,33 @@ public class DBproject{
 
 	public static void ListStatusNumberOfAppointmentsPerDoctor(DBproject esql) throws SQLException{//7
 		// Count number of different types of appointments per doctors and list them in descending order
+		String query = "SELECT D.doctor_ID, count(A.appt_id)" + 
+		"FROM Doctor D, has_appointment A " + 
+		"WHERE A.doctor_id = D.doctor_ID " + 
+		"GROUP BY D.doctor_ID " +
+		"ORDER BY count DESC;";
+		esql.executeQueryAndPrintResult(query);
 	}
 
 	
 	public static void FindPatientsCountWithStatus(DBproject esql) throws SQLException{//8
 		// Find how many patients per doctor there are with a given status (i.e. PA, AC, AV, WL) and list that number per doctor.
+		String query = "";
+		boolean valid = false;
+		String status = "";
+
+		do{
+			status = readStrInput("Enter status type (PA,AC,AV,WL)", 2);
+			
+			System.out.println("Entered status: " + status);
+			valid = isValid(readStrInput("Is this correct? (y/n)",3));
+		}while(!valid);
+
+		query = String.format("SELECT SUM(*) " +
+		"FROM Doctor D, has_appointment HA, Patient P, searches S, Appointment A " +
+		"WHERE D.doctor_id==HA.doctor_id AND HA.appt_id==S.aid AND S.pid==P.patient_ID AND A.status=='%s' " +
+		"GROUP BY D.doctor_id;", status);
+		
+		esql.executeQueryAndPrintResult(query);
 	}
 }
