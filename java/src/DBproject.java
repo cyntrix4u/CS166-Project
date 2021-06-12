@@ -535,6 +535,12 @@ public class DBproject{
 
 	public static void ListStatusNumberOfAppointmentsPerDoctor(DBproject esql) throws SQLException{//7
 		// Count number of different types of appointments per doctors and list them in descending order
+		String query = "SELECT D.doctor_ID, count(A.appt_id)" + 
+		"\nFROM Doctor D, has_appointment A" + 
+		"\nWHERE A.doctor_id = D.doctor_ID" + 
+		"\nGROUP BY D.doctor_ID" +
+		"\nORDER BY count DESC;";
+		esql.executeQueryAndPrintResult(query);
 	}
 
 	
