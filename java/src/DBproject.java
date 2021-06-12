@@ -481,83 +481,84 @@ public class DBproject{
 	}
 
 
-	// public static void MakeAppointment(DBproject esql) throws SQLException{//4
-	// 	// Given a patient, a doctor and an appointment of the doctor that s/he wants to take, add an appointment to the DB
+	public static void MakeAppointment(DBproject esql) throws SQLException{//4
+		// Given a patient, a doctor and an appointment of the doctor that s/he wants to take, add an appointment to the DB
 
-	// 	String sqlQuery = "";
-	// 	boolean valid = false;
-	// 	int appointmentID = 0;
-	// 	int doctorID = 0;
-	// 	int patientID = 0;
-	// 	String date = "";
-	// 	String timeSlot = ""; // hh:mm-hh:mm
-	// 	String status = ""; // PA, AV, WL, AC
+		String sqlQuery = "";
+		boolean valid = false;
+		int appointmentID = 0;
+		int doctorID = 0;
+		int patientID = 0;
+		String date = "";
+		String timeSlot = ""; // hh:mm-hh:mm
+		String status = ""; // PA, AV, WL, AC
 
-	// 	// How to make list list of int??
-	// 	List<List<String>> temp = new ArrayList<List<int>>();
-	// 	int val = 0;
-	// 	boolean ans = false;
+							// How to make list list of int??
+		List<List<String>> temp = new ArrayList<List<String>>();
+		int val = 0;
+		boolean ans = false;
+		String word = "";
 
-	// 	do{
-	// 		appointmentID = readIntInput("Enter appointment ID");
-	// 		sqlQuery = String.format("SELECT appnt_ID FROM appointment WHERE appnt_ID=%d", appointmentID);
+		do{
+			appointmentID = readIntInput("Enter appointment ID");
+			sqlQuery = String.format("SELECT appnt_ID FROM appointment WHERE appnt_ID=%d", appointmentID);
 
-	// 		temp = esql.executeQueryAndReturnResult(sqlQuery);
-	// 		ans = temp.isEmpty();
-	// 		if(ans == true) {
-	// 			System.out.println("There is no existing appointment with that ID!\n");
-	// 			continue;
-	// 		}	
-	// 		// Check status
-	// 		sqlQuery = String.format("SELECT status FROM appointment WHERE appnt_ID=%d", appointmentID);
-	// 		temp = esql.executeQueryAndReturnResult(sqlQuery);
-	// 		word = temp.get(0).get(0);
-	// 		if(word.equals("AV")) {
-	// 			System.out.println("The appointment is available. Appointment status will now change to active.\n");
-	// 		}	
-	// 		else {
-	// 			System.out.println("The appointment isn't available.\nPlease enter a different appointment ID.\n");
-	// 			continue;
-	// 		}	
+			temp = esql.executeQueryAndReturnResult(sqlQuery);
+			ans = temp.isEmpty();
+			if(ans == true) {
+				System.out.println("There is no existing appointment with that ID!\n");
+				continue;
+			}	
+			// Check status
+			sqlQuery = String.format("SELECT status FROM appointment WHERE appnt_ID=%d", appointmentID);
+			temp = esql.executeQueryAndReturnResult(sqlQuery);
+			word = temp.get(0).get(0);
+			if(word.equals("AV")) {
+				System.out.println("The appointment is available. Appointment status will now change to active.\n");
+			}	
+			else {
+				System.out.println("The appointment isn't available.\nPlease enter a different appointment ID.\n");
+				continue;
+			}	
+							
+			doctorID = readIntInput("Enter doctor ID");
+			sqlQuery = String.format("SELECT doctor_id FROM doctor WHERE doctor_id=%d", doctorID);
+			temp = esql.executeQueryAndReturnResult(sqlQuery);
+			ans = temp.isEmpty();
+			if(ans == true) {
+				System.out.println("There is no existing doctor with that ID!\n");
+				continue;
+			}	
 
-	// 		doctorID = readIntInput("Enter doctor ID");
-	// 		sqlQuery = String.format("SELECT doctor_id FROM doctor WHERE doctor_id=%d", doctorID);
-	// 		temp = esql.executeQueryAndReturnResult(sqlQuery);
-	// 		ans = temp.isEmpty();
-	// 		if(ans == true) {
-	// 			System.out.println("There is no existing doctor with that ID!\n");
-	// 			continue;
-	// 		}	
+			sqlQuery = String.format("SELECT COUNT(*) FROM doctor D, has_appointment HA, appointment A WHERE D.doctor_id=HA.doctor_id AND HA.appt_id=A.appnt_id AND A.status='AV' AND doctor_id=%d", doctorID);
+			temp = esql.executeQueryAndReturnResult(sqlQuery);
+			word = temp.get(0).get(0);
+			// if(val == 0) {
+			// 	System.out.println("The selected doctor doesn't have an appointment at that time. Please select a doctor with an available appointment.\n");
+			// 	continue;
+			// }
 
-	// 		sqlQuery = String.format("SELECT COUNT(*) FROM DOCTOR D, HAS_APPOINTMENT HA, APPOINTMENT A WHERE D.doctor_id=HA.doctor_id AND HA.appt_id=A.appnt_id AND A.status='AV' AND doctor_id=%d", doctorID);
-	// 		temp = esql.executeQueryAndReturnResult(sqlQuery);
-	// 		val = temp.get(0).get(0);
-	// 		if(val == 0) {
-	// 			System.out.println("The selected doctor doesn't have an appointment at that time. Please select a doctor with an available appointment.\n");
-	// 			continue;
-	// 		}
+			patientID = readIntInput("Enter patient ID");
+			sqlQuery = String.format("SELECT patient_id FROM patient WHERE patient_id=%d", patientID);
+			temp = esql.executeQueryAndReturnResult(sqlQuery);
+			ans = temp.isEmpty();
+			if(ans == true) {
+				System.out.println("There is no existing patient with that ID!\nPlease add patient to the database.\n");
+				AddPatient(esql);
+			}
 
-	// 		patientID = readIntInput("Enter patient ID");
-	// 		sqlQuery = String.format("SELECT patient_id FROM patient WHERE patient_id=%d", patientID);
-	// 		temp = esql.executeQueryAndReturnResult(sqlQuery);
-	// 		ans = temp.isEmpty();
-	// 		if(ans == true) {
-	// 			System.out.println("There is no existing patient with that ID!\nPlease add patient to the database.\n");
-	// 			AddPatient(esql);
-	// 		}
+			if(word.equals("AV")) {	
+				status = "AC";
+			}
 
-	// 		if(word.equals("AV")) {	
-	// 			status = "AC";
-	// 		}
-
-	// 		System.out.println("Appointment ID: " + appointmentID + ", Doctor ID: " + doctorID + ", Patient ID: " + patientID + ", status: " + status);
+			System.out.println("Appointment ID: " + appointmentID + ", Doctor ID: " + doctorID + ", Patient ID: " + patientID + ", status: " + status);
 			
-	// 		valid = isValid(readStrInput("Is this correct? (y/n)",3));
-	// 	}while(!valid);
-	// 	//DONE APPOINTMENT build sql statement 
-	// 	sqlQuery = String.format("UPDATE %s\nSET status='%s'\nWHERE appnt_ID=%d;","APPOINTMENT",status,appointmentID);
-	// 	esql.executeUpdate(sqlQuery);		
-	// }
+			valid = isValid(readStrInput("Is this correct? (y/n)",3));
+		}while(!valid);
+		//DONE APPOINTMENT build sql statement 
+		sqlQuery = String.format("UPDATE %s\nSET status='%s'\nWHERE appnt_ID=%d;","APPOINTMENT",status,appointmentID);
+		esql.executeUpdate(sqlQuery);		
+	}
 
 	public static void ListAppointmentsOfDoctor(DBproject esql) throws SQLException{//5
 		// For a doctor ID and a date range, find the list of active and available appointments of the doctor
@@ -609,12 +610,15 @@ public class DBproject{
 
 	public static void ListStatusNumberOfAppointmentsPerDoctor(DBproject esql) throws SQLException{//7
 		// Count number of different types of appointments per doctors and list them in descending order
-		String query = "SELECT D.doctor_ID, count(A.appt_id)" + 
-		"FROM Doctor D, has_appointment A " + 
-		"WHERE A.doctor_id = D.doctor_ID " + 
-		"GROUP BY D.doctor_ID " +
-		"ORDER BY count DESC;";
+		String query = "SELECT D.doctor_id, AP.status, COUNT(A.appt_id) FROM doctor D, has_appointment A, appointment AP WHERE D.doctor_ID=A.doctor_id AND A.appt_id = AP.appnt_ID GROUP BY D.doctor_ID, AP.status ORDER BY D.doctor_id ASC, count DESC;";
 		esql.executeQueryAndPrintResult(query);
+
+		// String query = "SELECT D.doctor_ID, count(A.appt_id), " + 
+		// "FROM Doctor D, has_appointment A " + 
+		// "WHERE A.doctor_id = D.doctor_ID " + 
+		// "GROUP BY D.doctor_ID " +
+		// "ORDER BY count DESC;";
+		// esql.executeQueryAndPrintResult(query);
 	}
 
 	
@@ -626,15 +630,19 @@ public class DBproject{
 
 		do{
 			status = readStrInput("Enter status type (PA,AC,AV,WL)", 2);
-			
+			if(!status.equals("PA") && !status.equals("AV") && !status.equals("WL") && !status.equals("AC")){
+				System.out.println("Invalid Status! Please try again...");
+				continue;
+			}
+
 			System.out.println("Entered status: " + status);
 			valid = isValid(readStrInput("Is this correct? (y/n)",3));
 		}while(!valid);
 
-		query = String.format("SELECT SUM(*) " +
-		"FROM Doctor D, has_appointment HA, Patient P, searches S, Appointment A " +
-		"WHERE D.doctor_id==HA.doctor_id AND HA.appt_id==S.aid AND S.pid==P.patient_ID AND A.status=='%s' " +
-		"GROUP BY D.doctor_id;", status);
+		query = String.format("SELECT D.doctor_id, A.status, COUNT(P.patient_id) AS total " +
+		"FROM doctor D, has_appointment HA, patient P, searches S, appointment A " +
+		"WHERE D.doctor_id=HA.doctor_id AND HA.appt_id=A.appnt_ID AND A.appnt_ID=S.aid AND S.pid=P.patient_ID AND A.status='%s' " +
+		"GROUP BY D.doctor_id, A.status;", status);
 		
 		esql.executeQueryAndPrintResult(query);
 	}
