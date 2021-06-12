@@ -481,9 +481,83 @@ public class DBproject{
 	}
 
 
-	public static void MakeAppointment(DBproject esql) throws SQLException{//4
-		// Given a patient, a doctor and an appointment of the doctor that s/he wants to take, add an appointment to the DB
-	}
+	// public static void MakeAppointment(DBproject esql) throws SQLException{//4
+	// 	// Given a patient, a doctor and an appointment of the doctor that s/he wants to take, add an appointment to the DB
+
+	// 	String sqlQuery = "";
+	// 	boolean valid = false;
+	// 	int appointmentID = 0;
+	// 	int doctorID = 0;
+	// 	int patientID = 0;
+	// 	String date = "";
+	// 	String timeSlot = ""; // hh:mm-hh:mm
+	// 	String status = ""; // PA, AV, WL, AC
+
+	// 	// How to make list list of int??
+	// 	List<List<String>> temp = new ArrayList<List<int>>();
+	// 	int val = 0;
+	// 	boolean ans = false;
+
+	// 	do{
+	// 		appointmentID = readIntInput("Enter appointment ID");
+	// 		sqlQuery = String.format("SELECT appnt_ID FROM appointment WHERE appnt_ID=%d", appointmentID);
+
+	// 		temp = esql.executeQueryAndReturnResult(sqlQuery);
+	// 		ans = temp.isEmpty();
+	// 		if(ans == true) {
+	// 			System.out.println("There is no existing appointment with that ID!\n");
+	// 			continue;
+	// 		}	
+	// 		// Check status
+	// 		sqlQuery = String.format("SELECT status FROM appointment WHERE appnt_ID=%d", appointmentID);
+	// 		temp = esql.executeQueryAndReturnResult(sqlQuery);
+	// 		word = temp.get(0).get(0);
+	// 		if(word.equals("AV")) {
+	// 			System.out.println("The appointment is available. Appointment status will now change to active.\n");
+	// 		}	
+	// 		else {
+	// 			System.out.println("The appointment isn't available.\nPlease enter a different appointment ID.\n");
+	// 			continue;
+	// 		}	
+
+	// 		doctorID = readIntInput("Enter doctor ID");
+	// 		sqlQuery = String.format("SELECT doctor_id FROM doctor WHERE doctor_id=%d", doctorID);
+	// 		temp = esql.executeQueryAndReturnResult(sqlQuery);
+	// 		ans = temp.isEmpty();
+	// 		if(ans == true) {
+	// 			System.out.println("There is no existing doctor with that ID!\n");
+	// 			continue;
+	// 		}	
+
+	// 		sqlQuery = String.format("SELECT COUNT(*) FROM DOCTOR D, HAS_APPOINTMENT HA, APPOINTMENT A WHERE D.doctor_id=HA.doctor_id AND HA.appt_id=A.appnt_id AND A.status='AV' AND doctor_id=%d", doctorID);
+	// 		temp = esql.executeQueryAndReturnResult(sqlQuery);
+	// 		val = temp.get(0).get(0);
+	// 		if(val == 0) {
+	// 			System.out.println("The selected doctor doesn't have an appointment at that time. Please select a doctor with an available appointment.\n");
+	// 			continue;
+	// 		}
+
+	// 		patientID = readIntInput("Enter patient ID");
+	// 		sqlQuery = String.format("SELECT patient_id FROM patient WHERE patient_id=%d", patientID);
+	// 		temp = esql.executeQueryAndReturnResult(sqlQuery);
+	// 		ans = temp.isEmpty();
+	// 		if(ans == true) {
+	// 			System.out.println("There is no existing patient with that ID!\nPlease add patient to the database.\n");
+	// 			AddPatient(esql);
+	// 		}
+
+	// 		if(word.equals("AV")) {	
+	// 			status = "AC";
+	// 		}
+
+	// 		System.out.println("Appointment ID: " + appointmentID + ", Doctor ID: " + doctorID + ", Patient ID: " + patientID + ", status: " + status);
+			
+	// 		valid = isValid(readStrInput("Is this correct? (y/n)",3));
+	// 	}while(!valid);
+	// 	//DONE APPOINTMENT build sql statement 
+	// 	sqlQuery = String.format("UPDATE %s\nSET status='%s'\nWHERE appnt_ID=%d;","APPOINTMENT",status,appointmentID);
+	// 	esql.executeUpdate(sqlQuery);		
+	// }
 
 	public static void ListAppointmentsOfDoctor(DBproject esql) throws SQLException{//5
 		// For a doctor ID and a date range, find the list of active and available appointments of the doctor
