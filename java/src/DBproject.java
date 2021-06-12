@@ -371,6 +371,9 @@ public class DBproject{
 		int did = 0;
 		boolean valid = false;
 
+		List<List<String>> temp = new ArrayList<List<String>>();
+		boolean ans = false;
+
 		do{
 			doctorID = readIntInput("Enter doctor ID");
 			name = readStrInput("Enter doctor's name",128);
@@ -382,9 +385,18 @@ public class DBproject{
 			valid = isValid(readStrInput("Is this correct? (y/n)",3));
 		}while(!valid);
 
-		//DONE DOCTOR build sql statement
-		sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%s', %d);","DOCTOR",doctorID,name,specialty,did);
-		esql.executeUpdate(sqlQuery);
+		sqlQuery = String.format("SELECT doctor_id FROM doctor WHERE doctor_id=%d", doctorID);
+		temp = esql.executeQueryAndReturnResult(sqlQuery);
+		//System.out.println(temp);
+		ans = temp.isEmpty();
+		if(ans == false) {
+			System.out.println("There is already an existing doctor with that ID!\nCan't add this doctor.\n");
+		}
+		else {
+			//DONE DOCTOR build sql statement
+			sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%s', %d);","DOCTOR",doctorID,name,specialty,did);
+			esql.executeUpdate(sqlQuery);
+		}	
 	}
 
 	public static void AddPatient(DBproject esql) throws SQLException{//2
@@ -397,6 +409,9 @@ public class DBproject{
 		int age = 0;
 		String address = "";
 		int numberOfApts = 0;
+
+		List<List<String>> temp = new ArrayList<List<String>>();
+		boolean ans = false;
 
 		do{
 			patientID = readIntInput("Enter patient ID");
@@ -411,9 +426,18 @@ public class DBproject{
 			valid = isValid(readStrInput("Is this correct? (y/n)",3));
 		}while(!valid);
 
-		//DONE PATIENT build sql statement 
+		sqlQuery = String.format("SELECT patient_id FROM patient WHERE patient_id=%d", patientID);
+		temp = esql.executeQueryAndReturnResult(sqlQuery);
+		//System.out.println(temp);
+		ans = temp.isEmpty();
+		if(ans == false) {
+			System.out.println("There is already an existing patient with that ID!\nCan't add this patient.\n");
+		}	
+		else {
+			//DONE PATIENT build sql statement 
 		sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%c', %d, '%s', %d);","PATIENT",patientID,name,gender,age, address, numberOfApts);
 		esql.executeUpdate(sqlQuery);
+		}	
 	}
 
 	public static void AddAppointment(DBproject esql) throws SQLException{//3
@@ -425,12 +449,15 @@ public class DBproject{
 		String timeSlot = ""; // hh:mm-hh:mm
 		String status = ""; // PA, AV, WL, AC
 
+		List<List<String>> temp = new ArrayList<List<String>>();
+		boolean ans = false;
+
 		do{
 			appointmentID = readIntInput("Enter appointment ID");
 			date = readStrInput("Enter date (mm/dd/yyyy)", 10);
 			timeSlot = readStrInput("Enter time slot (hh:mm-hh:mm)", 11);
 			status = readStrInput("Enter appointment status (PA/AV/WL/AC)", 2);
-			if(!status.equals("PA") || !status.equals("AV") || !status.equals("WL") || !status.equals("AC")){
+			if(!status.equals("PA") && !status.equals("AV") && !status.equals("WL") && !status.equals("AC")){
 				System.out.println("Invalid Status! Please try again...");
 				continue;
 			}
@@ -439,9 +466,18 @@ public class DBproject{
 			valid = isValid(readStrInput("Is this correct? (y/n)",3));
 		}while(!valid);
 
-		//DONE APPOINTMENT build sql statement 
-		sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%s', '%s');","APPOINTMENT",appointmentID,date,timeSlot,status);
-		esql.executeUpdate(sqlQuery);
+		sqlQuery = String.format("SELECT appointmentID FROM appointment WHERE appointmentID=%d", appointmentID);
+		temp = esql.executeQueryAndReturnResult(sqlQuery);
+		//System.out.println(temp);
+		ans = temp.isEmpty();
+		if(ans == false) {
+			System.out.println("There is already an existing appointment with that ID!\nCan't add this appointment.\n");
+		}	
+		else {
+			//DONE APPOINTMENT build sql statement 
+			sqlQuery = String.format("INSERT INTO %s\nVALUES (%d, '%s', '%s', '%s');","APPOINTMENT",appointmentID,date,timeSlot,status);
+			esql.executeUpdate(sqlQuery);
+		}
 	}
 
 
