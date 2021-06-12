@@ -466,7 +466,7 @@ public class DBproject{
 			valid = isValid(readStrInput("Is this correct? (y/n)",3));
 		}while(!valid);
 
-		sqlQuery = String.format("SELECT appointmentID FROM appointment WHERE appointmentID=%d", appointmentID);
+		sqlQuery = String.format("SELECT appnt_ID FROM appointment WHERE appnt_ID=%d", appointmentID);
 		temp = esql.executeQueryAndReturnResult(sqlQuery);
 		//System.out.println(temp);
 		ans = temp.isEmpty();
