@@ -499,6 +499,7 @@ public class DBproject{
 		boolean ans = false;
 		String word = "";
 
+		boolean test = true;
 		do{
 			appointmentID = readIntInput("Enter appointment ID");
 			sqlQuery = String.format("SELECT appnt_ID FROM appointment WHERE appnt_ID=%d", appointmentID);
@@ -520,23 +521,23 @@ public class DBproject{
 				System.out.println("The appointment isn't available.\nPlease enter a different appointment ID.\n");
 				continue;
 			}	
-							
+			
 			doctorID = readIntInput("Enter doctor ID");
-			sqlQuery = String.format("SELECT doctor_id FROM doctor WHERE doctor_id=%d", doctorID);
+			sqlQuery = String.format("SELECT D.doctor_ID FROM doctor D WHERE D.doctor_ID=%d", doctorID);
 			temp = esql.executeQueryAndReturnResult(sqlQuery);
 			ans = temp.isEmpty();
 			if(ans == true) {
 				System.out.println("There is no existing doctor with that ID!\n");
 				continue;
-			}	
+			}				
 
-			sqlQuery = String.format("SELECT COUNT(*) FROM doctor D, has_appointment HA, appointment A WHERE D.doctor_id=HA.doctor_id AND HA.appt_id=A.appnt_id AND A.status='AV' AND doctor_id=%d", doctorID);
+			sqlQuery = String.format("SELECT COUNT(*) FROM doctor D, has_appointment HA, appointment A WHERE D.doctor_id=HA.doctor_id AND HA.appt_id=A.appnt_id AND A.status='AV' AND D.doctor_id=%d", doctorID);
 			temp = esql.executeQueryAndReturnResult(sqlQuery);
 			word = temp.get(0).get(0);
-			// if(val == 0) {
-			// 	System.out.println("The selected doctor doesn't have an appointment at that time. Please select a doctor with an available appointment.\n");
-			// 	continue;
-			// }
+			if(val == 0) {
+				System.out.println("The selected doctor doesn't have an appointment at that time. Please select a doctor with an available appointment.\n");
+				continue;
+			}
 
 			patientID = readIntInput("Enter patient ID");
 			sqlQuery = String.format("SELECT patient_id FROM patient WHERE patient_id=%d", patientID);
@@ -578,9 +579,9 @@ public class DBproject{
 		}while(!valid);
 
 		//DONE APPOINTMENT build sql statement 
-		sqlQuery = String.format("SELECT appnt_ID, adate, time_slot " +
+		sqlQuery = String.format("SELECT appnt_ID, adate, time_slot, status " +
 		"FROM DOCTOR D, HAS_APPOINTMENT HA, APPOINTMENT A " +
-		"WHERE D.doctor_ID==HA.doctor_id AND HA.appt_id==A.appnt_ID AND D.doctor_ID==%d AND adate IN BETWEEN '%s' AND '%s';", doctorID,date1,date2);
+		"WHERE D.doctor_ID=HA.doctor_id AND HA.appt_id=A.appnt_ID AND D.doctor_ID=%d AND adate BETWEEN '%s' AND '%s';", doctorID,date1,date2);
 
 		esql.executeQueryAndPrintResult(sqlQuery);
 	}
@@ -591,6 +592,9 @@ public class DBproject{
 		boolean valid = false;
 		String deptName = "";
 		String date = "";
+		int word = 0;
+		boolean ans = false;
+		List<List<String>> temp = new ArrayList<List<String>>();
 
 		do{
 			deptName = readStrInput("Enter department name", 32);
@@ -601,11 +605,20 @@ public class DBproject{
 		}while(!valid);
 
 		//DONE APPOINTMENT build sql statement 
-		sqlQuery = "SELECT appnt_ID, adate, time_slot, status" +
-		"FROM APPOINTMENT A, HAS_APPOINTMENT HA,  DOCTOR Do, DEPARTMENT D" +
-		String.format("WHERE A.appnt_ID==HA.appt_id AND HA.doctor_id==Do.doctor_ID AND D.dept_ID==Do.did AND D.name=='%s' AND A.adate=='%s' AND A.status=='AV';", deptName,date);
+		// sqlQuery = String.format("SELECT A.appnt_ID, A.adate, A.time_slot, A.status FROM doctor DO, appointment A, has_appointment HA, department D WHERE A.appnt_ID=HA.appt_id AND HA.doctor_id=DO.doctor_ID AND D.dept_ID=DO.did AND D.name='%s' AND A.adate='%s' AND A.status='AV';", deptName,date);
 
+		// sqlQuery = String.format("SELECT A.appnt_ID, A.adate, A.status FROM doctor D1, appointment A, has_appointment HA, department D WHERE A.appnt_ID=HA.appt_id AND HA.doctor_id=D1.doctor_ID AND D.dept_ID=D1.did AND D.name='%s'AND A.adate='%s' AND A.status='AV';", deptName, date);
+
+		sqlQuery = String.format("SELECT A.appnt_ID, A.adate, A.status FROM department D, hospital H, searches S, appointment A WHERE D.hid=H.hospital_ID AND H.hospital_ID=S.hid AND S.aid=A.appnt_ID AND A.status='AV' AND D.name='%s' AND A.adate='%s' GROUP BY A.appnt_ID;", deptName, date);
 		esql.executeQueryAndPrintResult(sqlQuery);
+		temp = esql.executeQueryAndReturnResult(sqlQuery);
+		ans = temp.isEmpty();
+
+		//word = temp.get(0).size();
+		//System.out.println("number of apps is: " + word);
+		if(ans == true) {
+			System.out.println("No available appointments found!\n");
+		}
 	}
 
 	public static void ListStatusNumberOfAppointmentsPerDoctor(DBproject esql) throws SQLException{//7
